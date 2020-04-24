@@ -15,7 +15,7 @@ import MuseScore 3.0
 
 MuseScore {
       menuPath: "Plugins.TempoStretch"
-      version: "1.0.0"
+      version: "1.1.0"
       description: qsTr("Apply a % change to (selected) tempo markers")
       pluginType: "dialog"
       requiresScore: true
@@ -85,6 +85,18 @@ MuseScore {
                         beatBaseIndex = 5;
                   }
                   startBPMvalue = Math.round(foundTempo.tempo * 60 * 10) / 10;;
+            }
+            else { // No tempo marking found, add one ourselves
+                  curScore.startCmd();
+                  var newTempo = newElement(Element.TEMPO_TEXT);
+                  newTempo.text = beatBaseList[5].text.split('').join(' ') + ' = ' + startBPMvalue;
+                  newTempo.followText = true;
+                  newTempo.visible = false;
+                  var cursor = curScore.newCursor();
+                  cursor.rewind(Cursor.SCORE_START);
+                  cursor.add(newTempo);
+                  newTempo.tempo = startBPMvalue / 60; // Changing tempo is only possible after being added to the score
+                  curScore.endCmd(false);
             }
       }
 
