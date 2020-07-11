@@ -9,16 +9,18 @@ import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.3
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.2
 import Qt.labs.settings 1.0
 
 import MuseScore 3.0
 
 MuseScore {
       menuPath: "Plugins.TempoStretch"
-      version: "1.1.0"
+      version: "1.2.0"
       description: qsTr("Apply a % change to (selected) tempo markers")
       pluginType: "dialog"
       requiresScore: true
+      id: 'pluginId'
 
       property int startBPMvalue: 120 // Always as 1/4th == this value
       property int beatBaseIndex: 5
@@ -46,7 +48,8 @@ MuseScore {
       onRun: {
             if ((mscoreMajorVersion == 3) && (mscoreMinorVersion == 0) && (mscoreUpdateVersion < 5)) {
                   console.log(qsTr("Unsupported MuseScore version.\nTempoStretch needs v3.0.5 or above.\n"));
-                  Qt.quit();
+                  pluginId.parent.Window.window.close();
+                  return;
             }
             findStartBPM();
             // Now show it
@@ -354,20 +357,20 @@ MuseScore {
                   text: qsTranslate("PrefsDialogBase", "Apply")
                   onClicked: {
                         applyTempoStretch();
-                        Qt.quit();
+                        pluginId.parent.Window.window.close();
                   }
             }
       }
 
       Keys.onEscapePressed: {
-            Qt.quit();
+            pluginId.parent.Window.window.close();
       }
       Keys.onReturnPressed: {
             applyTempoStretch();
-            Qt.quit();
+            pluginId.parent.Window.window.close();
       }
       Keys.onEnterPressed: {
             applyTempoStretch();
-            Qt.quit();
+            pluginId.parent.Window.window.close();
       }
 }
