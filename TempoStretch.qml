@@ -15,10 +15,13 @@ import Qt.labs.settings 1.0
 import MuseScore 3.0
 
 MuseScore {
-      menuPath: "Plugins.TempoStretch"
-      version: "1.2.0"
+      menuPath: 'Plugins.TempoStretch'
+      title: 'TempoStretch'
+      version: '4.0.0'
       description: qsTr("Apply a % change to (selected) tempo markers")
-      pluginType: "dialog"
+      thumbnailName: 'TempoStretch.png'
+      categoryCode: 'tools'
+      pluginType: 'dialog'
       requiresScore: true
       id: 'pluginId'
 
@@ -46,11 +49,6 @@ MuseScore {
       height: 160
 
       onRun: {
-            if ((mscoreMajorVersion == 3) && (mscoreMinorVersion == 0) && (mscoreUpdateVersion < 5)) {
-                  console.log(qsTr("Unsupported MuseScore version.\nTempoStretch needs v3.0.5 or above.\n"));
-                  pluginId.parent.Window.window.close();
-                  return;
-            }
             findStartBPM();
             // Now show it
             var beatBaseItem = beatBaseList[beatBaseIndex];
@@ -189,7 +187,7 @@ MuseScore {
             // Scan through all relevant segments
             var segment = sel.startSeg;
             do {
-                  if (segment.segmentType == Ms.ChordRest) {
+                  if (segment.segmentType == Segment.ChordRest) {
                         var foundTempoMarking = findExistingTempoElement(segment);
                         if (foundTempoMarking !== undefined) {
                               // Found a tempo marking; analyse it
@@ -263,7 +261,7 @@ MuseScore {
                               return (segment.annotations[i]);
                         }
                   }
-			}
+            }
             return undefined; //invalid - no tempo text found
       }
 
